@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .minesweeper-cell {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--cell-size, 1.5rem);
+  height: var(--cell-size, 1.5rem);
   border-style: solid;
   border-width: 2px;
   border-top-color: #fff;
@@ -13,8 +13,8 @@
   border-bottom-color: #9ca3af;
   background: #d1d5db;
   text-align: center;
-  line-height: 1.5rem;
-  font-size: 0.75rem;
+  line-height: var(--cell-size, 1.5rem);
+  font-size: calc(var(--cell-size, 1.5rem) * 0.5);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   user-select: none;
 }

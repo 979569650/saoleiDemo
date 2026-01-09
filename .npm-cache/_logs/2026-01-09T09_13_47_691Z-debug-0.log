@@ -7,12 +7,13 @@
 6 silly config load:file:C:\Program Files\nodejs\node_global\etc\npmrc
 7 verbose title npm run type-check
 8 verbose argv "run" "type-check"
-9 verbose logfile logs-max:10 dir:D:\code\SaoLei\.npm-cache\_logs\2026-01-09T07_55_33_950Z-
-10 verbose logfile D:\code\SaoLei\.npm-cache\_logs\2026-01-09T07_55_33_950Z-debug-0.log
-11 silly logfile done cleaning log files
-12 verbose cwd D:\code\SaoLei
-13 verbose os Windows_NT 10.0.26100
-14 verbose node v22.16.0
-15 verbose npm  v11.6.2
-16 verbose exit 2
-17 verbose code 2
+9 verbose logfile logs-max:10 dir:D:\code\SaoLei\.npm-cache\_logs\2026-01-09T09_13_47_691Z-
+10 verbose logfile D:\code\SaoLei\.npm-cache\_logs\2026-01-09T09_13_47_691Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
+13 verbose cwd D:\code\SaoLei
+14 verbose os Windows_NT 10.0.26100
+15 verbose node v22.16.0
+16 verbose npm  v11.6.2
+17 verbose exit 0
+18 info ok

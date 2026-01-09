@@ -7,6 +7,12 @@
       <DifficultySelector :difficulties="difficulties" :current-difficulty-index="currentDifficultyIndex"
         @change-difficulty="handleDifficultyChange" />
 
+      <div class="flex items-center gap-3 mb-4">
+        <label class="text-sm text-gray-700">缩放</label>
+        <input type="range" v-model.number="cellSize" min="12" max="28" step="1" class="w-40" />
+        <span class="text-xs text-gray-600">{{ Math.round(cellSize) }}px</span>
+      </div>
+
       <div class="flex justify-center mb-4">
         <button
           class="px-6 py-2 bg-gray-300 border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 hover:bg-gray-200 active:border-t-gray-600 active:border-l-gray-600 active:border-b-white active:border-r-white disabled:opacity-50 disabled:cursor-not-allowed"
@@ -20,9 +26,11 @@
         :game-status="gameState.gameStatus" @reset="handleReset" />
 
       <!-- 游戏棋盘 -->
-      <div class="flex justify-center">
-        <GameBoard :board="gameState.board" :disabled="isWaitingToStart" @reveal="handleReveal"
-          @toggle-flag="handleToggleFlag" />
+      <div class="w-full max-w-full overflow-auto" :style="{ '--cell-size': `${cellSize}px` }">
+        <div class="flex justify-center">
+          <GameBoard :board="gameState.board" :disabled="isWaitingToStart" @reveal="handleReveal"
+            @toggle-flag="handleToggleFlag" />
+        </div>
       </div>
 
       <!-- 游戏结果提示 -->
@@ -42,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useGame } from '@/composables/useGame'
 import GameBoard from '@/components/GameBoard.vue'
 import GameStatus from '@/components/GameStatus.vue'
@@ -65,6 +73,16 @@ const difficulties = [
 
 const currentDifficultyIndex = ref(0)
 const isWaitingToStart = ref(true)
+const cellSize = ref(24)
+
+const getAutoCellSize = () => {
+  const cols = gameState.value.difficulty.cols
+  const viewport = Math.min(window.innerWidth, 480)
+  const padding = 24
+  const available = Math.max(120, viewport - padding)
+  const fit = Math.floor(available / cols)
+  return Math.min(28, Math.max(12, fit))
+}
 
 const handleReveal = (row: number, col: number) => {
   revealCell(row, col)
@@ -78,6 +96,7 @@ const handleDifficultyChange = (index: number) => {
   currentDifficultyIndex.value = index
   changeDifficulty(index)
   isWaitingToStart.value = true
+  cellSize.value = getAutoCellSize()
 }
 
 const handleStart = () => {
@@ -92,5 +111,17 @@ const handleReset = () => {
 onMounted(() => {
   initializeGame(0)
   isWaitingToStart.value = true
+  cellSize.value = getAutoCellSize()
+  const onResize = () => { cellSize.value = getAutoCellSize() }
+  window.addEventListener('resize', onResize)
+  resizeHandler = onResize
+})
+
+let resizeHandler: ((this: Window, ev: UIEvent) => any) | null = null
+onBeforeUnmount(() => {
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler)
+    resizeHandler = null
+  }
 })
 </script>
